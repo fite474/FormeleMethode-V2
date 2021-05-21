@@ -204,6 +204,8 @@ namespace Voorbeeld
             Console.WriteLine("The initial state is {0}", initial);
             Console.WriteLine("The final state is {0}\n", final);
 
+            string nfaInput = "";
+
             for (state from = 0; from < size; ++from)
             {
                 for (state to = 0; to < size; ++to)
@@ -212,12 +214,27 @@ namespace Voorbeeld
 
                     if (@in != (char)Constants.None)
                     {
-                        Console.Write("Transition from {0} to {1} on input ", from, to);
+                        //Console.Write("Transition from {0} to {1} on input ", from, to);
+                        //Console.Write("Trans[ {0} to {1} on input ", from, to);
+                        //            foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in transTable)
+                        //Console.Write("Trans[{0}, {1}] = {2}\n", kvp.Key.Key, kvp.Key.Value, kvp.Value);
 
                         if (@in == (char)Constants.Epsilon)
-                            Console.Write("Epsilon\n");
+                        {
+                            nfaInput = "Epsilon     ";
+                        }
                         else
-                            Console.Write("{0}\n", @in);
+                        {
+                            nfaInput = @in.ToString() + "           ";
+                            //Console.Write("{0}\n", @in);
+                        }
+
+
+                        Console.Write("Trans[{0}, {2}] = {1} \n", from, to, nfaInput);
+
+                        //Console.Write("Epsilon\n");
+                        //else
+                        //    Console.Write("{0}\n", @in);
                     }
                 }
             }

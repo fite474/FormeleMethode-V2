@@ -249,6 +249,24 @@ namespace Voorbeeld
                 return left;
         }
 
+
+        //TODO list
+        //aanmaken geef mogelijke taal tot max lengte(int) (proberen verschillende mogelijkheden in de RegEx)(of alle mogelijkheden en aantonen welke wel en niet juist)
+
+        //  eenvoudige constructor voor gebruiken "eindigt op: xya", "begint op, etc"
+
+        // invoeren taal/string to check via output window ipv hardcoded evt.
+
+        //(to check?) invoegen van reverse methode(pijlen omdraaien)
+
+        //inlezen werking thompson constructie om te kunnen uitleggen
+
+
+
+
+
+
+
         /// <summary>
         /// The main entry point of the Console Application
         /// </summary>
@@ -288,7 +306,7 @@ namespace Voorbeeld
                 Environment.Exit(1);
             }
 
-            PrintTree(parseTree, 1);
+            //PrintTree(parseTree, 1);
 
             NFA nfa = NFA.TreeToNFA(parseTree);
 
