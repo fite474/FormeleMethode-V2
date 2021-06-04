@@ -260,10 +260,12 @@ namespace Voorbeeld
         //(to check?) invoegen van reverse methode(pijlen omdraaien)
 
         //inlezen werking thompson constructie om te kunnen uitleggen
+        //check afhankelijkheid nfa en dfa werking
+
+        //deze extra implementaties netjes opsplitsen in bijbehorende classen
 
 
-
-
+        //(week 5) gelijkheid regulire expressie
 
 
 
@@ -279,6 +281,10 @@ namespace Voorbeeld
 
             args = new[] { "Voorbeeld", "((ba*b)|(bb)|(aa))", "baaaaaabbbaa" };
 #endif
+
+            //string val1;
+            //Console.Write("Enter te: ");
+            //val1 = Console.ReadLine();
             //((ba*b) | (bb)+ | (aa)+)+
             if (args.Length != 3)
             {

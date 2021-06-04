@@ -51,6 +51,7 @@ namespace Voorbeeld
 
                 // Inserts into the marked set.
                 markedStates.Add(aState);
+                Console.WriteLine(aState);
 
                 // If this state contains the NFA's final state, add it to the DFA's set of
                 // final states.

@@ -3,9 +3,11 @@
 using System.Text;
 using SCG = System.Collections.Generic;
 using C5;
+using QuikGraph;
 
 using state = System.Int32;
 using input = System.Char;
+
 
 namespace Voorbeeld
 {
@@ -236,9 +238,15 @@ namespace Voorbeeld
                         //else
                         //    Console.Write("{0}\n", @in);
                     }
+                    else
+                    {
+                        //Console.Write("No trans");
+                    }
                 }
             }
             Console.Write("\n\n");
+            
+
         }
 
         /// <summary>
@@ -248,6 +256,8 @@ namespace Voorbeeld
         /// <returns></returns>
         public static NFA TreeToNFA(ParseTree tree)
         {
+            
+
             switch (tree.type)
             {
                 case ParseTree.NodeType.Chr:
