@@ -276,10 +276,10 @@ namespace Voorbeeld
         static void Main(string[] args)
         {
 #if DEBUG
-            //args = new[] { "Voorbeeld", "(l|e)*n?(i|e)el*", "leniel" };
+            args = new[] { "Voorbeeld", "(l|e)*n?(i|e)el*", "leniel" };
 
 
-            args = new[] { "Voorbeeld", "((ba*b)|(bb)|(aa))", "baaaaaabbbaa" };
+            //args = new[] { "Voorbeeld", "(a*b?)", "baaaaaabbbaa" };
 #endif
 
             //string val1;
@@ -311,6 +311,18 @@ namespace Voorbeeld
 
                 Environment.Exit(1);
             }
+
+			int length = 6;
+			Console.WriteLine($"Possible words in this language with maximum length {length}");
+			List<string> result = parseTree.GiveLanguage(length + 1);
+			result.Sort((x, y) => x.Length - y.Length);
+			HashSet<string> language = new HashSet<string>(result);
+
+			foreach(string word in language)
+			{
+				Console.WriteLine(word);
+			}
+			Console.WriteLine();
 
             //PrintTree(parseTree, 1);
 
