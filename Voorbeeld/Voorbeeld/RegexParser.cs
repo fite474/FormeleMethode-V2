@@ -251,7 +251,8 @@ namespace Voorbeeld
 
 
         //TODO list
-        //aanmaken geef mogelijke taal tot max lengte(int) (proberen verschillende mogelijkheden in de RegEx)(of alle mogelijkheden en aantonen welke wel en niet juist)
+        //aanmaken geef mogelijke taal tot max lengte(int) (proberen verschillende mogelijkheden in de RegEx)
+        //(of alle mogelijkheden en aantonen welke wel en niet juist)
 
         //  eenvoudige constructor voor gebruiken "eindigt op: xya", "begint op, etc"
 
@@ -279,7 +280,8 @@ namespace Voorbeeld
             //args = new[] { "Voorbeeld", "(l|e)*n?(i|e)el*", "leniel" };
 
 
-            args = new[] { "Voorbeeld", "((ba*b)|(bb)|(aa))", "baaaaaabbbaa" };
+            args = new[] { "Voorbeeld", "((ba*b)|(bb)|(aa))", "baaaaaab" };
+            //args = new[] { "Voorbeeld", "((bb)|(aa))", "aa" };
 #endif
 
             //string val1;
