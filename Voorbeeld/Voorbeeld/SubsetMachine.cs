@@ -51,7 +51,7 @@ namespace Voorbeeld
 
                 // Inserts into the marked set.
                 markedStates.Add(aState);
-                Console.WriteLine(aState);
+                
 
                 // If this state contains the NFA's final state, add it to the DFA's set of
                 // final states.
@@ -65,7 +65,7 @@ namespace Voorbeeld
                 {
                     // Next state
                     Set<state> next = EpsilonClosure(nfa, nfa.Move(aState, iE.Current));
-
+                    Console.WriteLine(next);
                     // If we haven't examined this state before, add it to the unmarkedStates and make up a new number for it.
                     if (!unmarkedStates.Contains(next) && !markedStates.Contains(next))
                     {
@@ -80,7 +80,7 @@ namespace Voorbeeld
                     dfa.transTable[transition] = dfaStateNum[next];
                 }
             }
-
+            //HopcroftDFA(dfa);
             return dfa;
         }
 
@@ -127,6 +127,9 @@ namespace Voorbeeld
             return epsilonClosure;
         }
 
+
+
+
         /// <summary>
         /// Creates unique state numbers for DFA states
         /// </summary>
@@ -135,5 +138,321 @@ namespace Voorbeeld
         {
             return num++;
         }
+
+        public static DFA HopcroftDFA(DFA dfa)
+        {
+            Set<KeyValuePair<state, input>> transitions = new Set<KeyValuePair<state, input>>();
+            Set<KeyValuePair<state, input>> finalTransitions = new Set<KeyValuePair<state, input>>();
+            Set<state> finalStates = new Set<state>();
+            Set<state> otherStates = new Set<state>();
+            SCG.List<input> alphabet = new SCG.List<input>();
+
+            finalStates = dfa.final;
+
+            foreach (KeyValuePair<state, input> transStates in dfa.transTable.Keys)
+            {
+                if (!finalStates.Contains(transStates.Key))
+                {
+                    otherStates.Add(transStates.Key);
+                    transitions.Add(transStates);
+
+                }
+                else
+                {
+                    finalTransitions.Add(transStates);
+                }
+
+
+  
+            }
+
+            int startState = 0;
+
+            HopcroftState hopcroftState = new HopcroftState();
+            SCG.List<HopcroftState> hlist = new SCG.List<HopcroftState>();
+
+            //create first step, splitting final and other states
+            foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in dfa.transTable)
+            {
+                KeyValuePair<state, input> transition = new KeyValuePair<state, input>();
+
+
+                if (kvp.Key.Key != startState)
+                {
+                    startState++;
+                    hlist.Add(hopcroftState);
+                    hopcroftState = new HopcroftState();
+                }
+
+                hopcroftState.state = kvp.Key.Key;
+
+                transition.Key = kvp.Value;//toestand leid naar deze toestand
+                transition.Value = kvp.Key.Value;//op input dit
+
+
+                hopcroftState.transition.Add(transition);
+
+
+                //Set<HopcroftState> singleToestandGroup = new Set<HopcroftState>();
+
+                if (finalStates.Contains(kvp.Key.Key))
+                {
+                    //hopcroftState.groupedState.ad
+                    hopcroftState.group = 1;
+
+                }
+                else
+                {
+                    hopcroftState.group = 0;
+                }
+
+
+                if (!alphabet.Contains(kvp.Key.Value))
+                {
+                    alphabet.Add(kvp.Key.Value);
+                }
+
+            }
+
+            //laatste nog toevoegen aan de lijst
+            hlist.Add(hopcroftState);
+
+            SCG.List<SCG.List<HopcroftState>> toestanden = new SCG.List<SCG.List<HopcroftState>>();
+
+
+            SCG.List<HopcroftState> groep0 = new SCG.List<HopcroftState>();
+            SCG.List<HopcroftState> groep1 = new SCG.List<HopcroftState>();
+            //groeperen van de 2 toestanden
+            foreach (HopcroftState hopcroft in hlist)
+            {
+                if (hopcroft.group == 0)
+                {
+                    groep0.Add(hopcroft);
+                }
+                else if (hopcroft.group == 1)
+                {
+                    groep1.Add(hopcroft);
+                }
+            }
+            toestanden.Add(groep0);
+            toestanden.Add(groep1);
+
+
+
+
+            Set<KeyValuePair<state, input>> markedStates = new Set<KeyValuePair<state, input>>();
+            Set<KeyValuePair<state, input>> unmarkedStates = new Set<KeyValuePair<state, input>>();
+            
+
+
+
+
+            SCG.List<HopcroftState> groepNew = new SCG.List<HopcroftState>();
+            //kijken of er nieuwe toestanden gemaakt moeten worden
+            foreach (SCG.List<HopcroftState> toestand in toestanden)
+            {
+                unmarkedStates = new Set<KeyValuePair<state, input>>();
+
+                foreach (HopcroftState hopcroft in toestand)
+                {
+
+                    foreach (KeyValuePair<state, input> item in hopcroft.transition)
+                    {
+                        unmarkedStates.Add(item);
+                    }
+                }
+                //nu heb je lijst van alle transitions van 1 groep
+                //kijken of alle transitions zelfde zijn. zo niet, maak een nieuwe groep en voeg die toe.
+                for (int i = 0; i < alphabet.Count; i++)
+                {
+
+                }
+
+
+
+
+
+
+
+
+                
+            }
+
+        
+
+
+
+
+
+
+
+
+
+
+
+            int intitalStatesCount = 1;//final states en other states
+            int finalStatesCount = 1;
+
+            DFA hopcroftDfa = new DFA();
+
+            hopcroftDfa.start = dfa.start;
+
+            //Set<state> finalStates = new Set<state>();
+            //Set<state> otherStates = new Set<state>();
+
+
+            //KeyValuePair<state, input> 
+
+            HashDictionary<Set<state>, state> dfaStateNum = new HashDictionary<Set<state>, state>();
+
+            //Set<KeyValuePair<state, input>> transitions = new Set<KeyValuePair<state, input>>();
+            //Set<KeyValuePair<state, input>> finalTransitions = new Set<KeyValuePair<state, input>>();
+            finalStates = dfa.final;
+
+
+            SCG.SortedList<KeyValuePair<state, input>, state> finalTransitions2 = new SCG.SortedList<KeyValuePair<state, input>, state>(new Comparer());
+            SCG.SortedList<KeyValuePair<state, input>, state> initialTransitions2 = new SCG.SortedList<KeyValuePair<state, input>, state>(new Comparer());
+
+            // SCG.SortedList<KeyValuePair<state, input>, state> hopcroftTransTable = new SCG.SortedList<KeyValuePair<state, input>, state>(new Comparer());
+            int endingstate = -1;
+            foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in dfa.transTable)
+            {
+                KeyValuePair<state, input> transition = new KeyValuePair<state, input>();
+
+                if (finalStates.Contains(kvp.Key.Key))
+                {
+                    //KeyValuePair<state, input> transition = new KeyValuePair<state, input>();
+                    transition.Key = kvp.Key.Key;
+                    transition.Value = kvp.Key.Value;
+                    //endingstate = 1;
+                    int endingState = kvp.Value;
+
+                    finalTransitions2.Add(transition, endingState);
+
+                }
+                else
+                {
+                    transition.Key = kvp.Key.Key;
+                    transition.Value = kvp.Key.Value;
+                    //endingstate = 0;
+                    int endingState = kvp.Value;
+
+                    initialTransitions2.Add(transition, endingState);
+                }
+
+            }
+
+            Console.WriteLine("groep 1\n");
+            foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in initialTransitions2)
+                Console.WriteLine("Trans[{0}, {1}] = {2}\n", kvp.Key.Key, kvp.Key.Value, kvp.Value);
+            
+            Console.WriteLine("groep 2\n");
+            foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in finalTransitions2)
+                Console.WriteLine("Trans[{0}, {1}] = {2}\n", kvp.Key.Key, kvp.Key.Value, kvp.Value);
+
+
+
+
+
+
+
+
+                foreach (KeyValuePair<state, input> transStates in dfa.transTable.Keys)
+            {
+                if (!finalStates.Contains(transStates.Key))
+                {
+                    otherStates.Add(transStates.Key);
+                    transitions.Add(transStates);
+
+                }
+                else
+                {
+                    finalTransitions.Add(transStates);
+                }
+
+
+            }
+
+            foreach (KeyValuePair<state, input> transStates in finalTransitions)
+            {
+
+            }
+
+
+
+
+
+
+
+
+
+            SCG.SortedList<KeyValuePair<state, input>, state> newTransTable = new SCG.SortedList<KeyValuePair<state, input>, state>(new Comparer());//dfa.transTable;
+            newTransTable = dfa.transTable;
+
+
+            foreach (SCG.KeyValuePair<KeyValuePair<state, input>, state> kvp in newTransTable)
+            {
+                KeyValuePair<state, input> transition = new KeyValuePair<state, input>();
+
+                if (finalStates.Contains(kvp.Value))
+                {
+                    //KeyValuePair<state, input> transition = new KeyValuePair<state, input>();
+                    transition.Key = kvp.Key.Key;
+                    transition.Value = kvp.Key.Value;
+
+                    //finalStatesCount++;
+
+                    hopcroftDfa.transTable.Add(transition, 1);
+
+                    //Set<state> next = new Set<state>();
+                    //next.Add(dfa.transTable.TryGetValue(kvp.Key.Key, out int toestand));
+                    //kvp.key.key add new num
+
+                    //dfaStateNum.Add(next, intitalStatesCount);
+                }
+                else if (finalStates.Contains(kvp.Key.Key))
+                {
+
+
+                    transition.Key = kvp.Key.Key;
+                    transition.Value = kvp.Key.Value;
+
+                    hopcroftDfa.transTable.Add(transition, 1);
+                }
+                else
+                {
+                    transition.Key = kvp.Key.Key;
+                    transition.Value = kvp.Key.Value;
+
+                    hopcroftDfa.transTable.Add(transition, 0);
+                }
+
+            }
+       
+
+
+
+
+
+            return hopcroftDfa;
+        }
+
+
+
+
+
+        //minimaliseer2(dfa)
+        //= toDFA(reverse (toDFA (reverse (dfa)))
+        //toDFA::NDFA -> DFA
+        // deze methode moet je toch al maken!
+        // let erop dat je de slimme aanpak implementeert
+        // zodat je alleen bereikbare toestanden krijgt.
+        //reverse :: DFA -> NDFA
+        // deze methode kost 10 minuten:
+        // - pijlen omdraaien
+        // - eindtoestanden worden begintoestanden
+        // - begintoestanden worden eindtoestanden
+
+
     }
 }
